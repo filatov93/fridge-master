@@ -15,16 +15,15 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $users = [
+        if (!User::where('login', 'test_user_1')->first()) {
             User::create([
                 'name' => 'Test User 1',
                 'email' => 'test1@test.com',
                 'login' => 'test_user_1',
                 'password' => Hash::make('password1')
-            ]),
-        ];
-        foreach ($users as $user) {
-            $user->save();
+            ]);
         }
+
+        User::factory(15)->create();
     }
 }

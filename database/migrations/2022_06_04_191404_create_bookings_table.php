@@ -17,7 +17,7 @@ class CreateBookingsTable extends Migration
             $table->id();
             $table->string('booking_uid', 12)->unique();
             $table->foreignId('user_id');
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->decimal('price');
         });
     }

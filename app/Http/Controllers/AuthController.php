@@ -22,7 +22,7 @@ class AuthController extends Controller
         $response = ['error' => null];
 
         if (!$user) $response['error'] = 'User not exists';
-        if (!Hash::check($request->password, $user->password))
+        if ($user && !Hash::check($request->password, $user->password))
             $response['error'] = 'Incorrect password';
 
         if (!$response['error']) {

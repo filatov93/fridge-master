@@ -20,6 +20,7 @@ class CreateBlocksTable extends Migration
             $table->integer('width')->default(1);
             $table->integer('height')->default(1);
             $table->float('available_space');
+            $table->foreignId('warehouse_id');
         });
     }
 
