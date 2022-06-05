@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             WarehouseSeeder::class,
             BlockSeeder::class,
-            BookingSeeder::class,
         ]);
     }
 }

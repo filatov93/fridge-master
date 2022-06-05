@@ -11,4 +11,12 @@ class Booking extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'booking_uid',
+        'user_id',
+        'price',
+        'location_id',
+        'warehouses_used'
+    ];
+
 }

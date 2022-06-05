@@ -11,6 +11,19 @@ class Location extends Model
 
     public $timestamps = false;
 
+    public function getWarehousesInfo()
+    {
+        $data = [];
+        foreach ($this->warehouses as $warehouse) {
+            array_push($data, [
+                'warehouse_id' => $warehouse->id,
+                'temperature' => $warehouse->temperature,
+                'available_blocks' => count($warehouse->availableBlocks())
+            ]);
+        }
+        return $data;
+    }
+
     public function warehouses()
     {
         return $this->hasMany(Warehouse::class);

@@ -13,11 +13,7 @@ class BlockFactory extends Factory
      */
     public function definition()
     {
-        $availableSpace = $this->faker->randomFloat('2', '0', '2');
-        $fulfilled = $availableSpace == 2;
         return [
-            'fulfilled' => $fulfilled,
-            'available_space' => $availableSpace,
             'warehouse_id' => $this->faker->numberBetween(1, 12),
         ];
     }

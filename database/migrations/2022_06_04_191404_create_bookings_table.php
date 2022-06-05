@@ -19,6 +19,8 @@ class CreateBookingsTable extends Migration
             $table->foreignId('user_id');
             $table->string('status')->nullable();
             $table->decimal('price');
+            $table->foreignId('location_id');
+            $table->string('warehouses_used');
         });
     }
 
