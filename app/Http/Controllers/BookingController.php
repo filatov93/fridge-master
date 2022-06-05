@@ -222,47 +222,123 @@ class BookingController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/bookings/{id}",
+     *     tags={"bookings"},
+     *     summary="Get the booking by id",
+     *     security={ {"apiAuth": {} }},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="Booking ID",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 ref="#/components/schemas/Booking",
+     *             ),
+     *             @OA\Examples(example="result",
+     *                  value={"booking_uid": "tUPzqV2F5zZ8", "user_id": 1, "price": 44,00, "location_id": 1, "warehouses_used": {1,3}},
+     *                  summary="An result object."),
+     *         )
+     *     )
+     * )
      */
     public function show($id)
     {
-        //
+        return response(['error' => "Endpoint is not implemented"], 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+//    public function edit(Request $request)
+//    {
+//        return response(['error' => 'Endpoint is not implemented'], 404);
+//    }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/bookings/{id}",
+     *     tags={"bookings"},
+     *     summary="Update the booking by id",
+     *     security={ {"apiAuth": {} }},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="Booking ID",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="value_to_update",
+     *                     type="string"
+     *                 ),
+     *                 example={"value_to_update": "test"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="booking_uid",
+     *                 ref="#/components/schemas/Booking",
+     *             ),
+     *             @OA\Examples(example="result",
+     *                  value={"booking_uid": "tUPzqV2F5zZ8", "user_id": 1, "price": 44,00, "location_id": 1, "warehouses_used": {1,3}},
+     *                  summary="An result object."),
+     *         )
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
-        //
+        return response(['error' => 'Endpoint is not implemented'], 404);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/bookings/{id}",
+     *     tags={"bookings"},
+     *     summary="Delete the booking by id",
+     *     security={ {"apiAuth": {} }},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="Booking ID",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="booking_uid",
+     *                 ref="#/components/schemas/Booking",
+     *             ),
+     *             @OA\Examples(example="result",
+     *                  value={"booking_uid": "tUPzqV2F5zZ8", "user_id": 1, "price": 44,00, "location_id": 1, "warehouses_used": {1,3}},
+     *                  summary="An result object."),
+     *         )
+     *     )
+     * )
      */
     public function destroy($id)
     {
-        //
+        return response(['error' => 'Endpoint is not implemented'], 404);
     }
 }

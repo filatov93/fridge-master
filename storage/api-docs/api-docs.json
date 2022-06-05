@@ -264,9 +264,237 @@
                     }
                 ]
             }
+        },
+        "/bookings/{id}": {
+            "get": {
+                "tags": [
+                    "bookings"
+                ],
+                "summary": "Get the booking by id",
+                "operationId": "4b13c909d897a5edd245741a4aafd9d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Booking ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "": {
+                                            "$ref": "#/components/schemas/Booking"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "booking_uid": "tUPzqV2F5zZ8",
+                                            "user_id": 1,
+                                            "price": 44,
+                                            "0": 0,
+                                            "location_id": 1,
+                                            "warehouses_used": [
+                                                1,
+                                                3
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "bookings"
+                ],
+                "summary": "Update the booking by id",
+                "operationId": "6f58c5d17bbc7034b229d97390054811",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Booking ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "booking": {
+                                        "$ref": "#/components/schemas/Booking"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "location_id": 2,
+                                    "required_blocks": 1,
+                                    "price": 484,
+                                    "warehouses_used": [
+                                        5,
+                                        8
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "booking_uid": {
+                                            "$ref": "#/components/schemas/Booking"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "booking_uid": "tUPzqV2F5zZ8",
+                                            "user_id": 1,
+                                            "price": 44,
+                                            "0": 0,
+                                            "location_id": 1,
+                                            "warehouses_used": [
+                                                1,
+                                                3
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "bookings"
+                ],
+                "summary": "Delete the booking by id",
+                "operationId": "dc3a5e70d8c1811d5888122376cf81b3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Booking ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "booking_uid": {
+                                            "$ref": "#/components/schemas/Booking"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "booking_uid": "tUPzqV2F5zZ8",
+                                            "user_id": 1,
+                                            "price": 44,
+                                            "0": 0,
+                                            "location_id": 1,
+                                            "warehouses_used": [
+                                                1,
+                                                3
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
+        "schemas": {
+            "Booking": {
+                "title": "Booking model",
+                "description": "Booking model",
+                "properties": {
+                    "booking_uid": {
+                        "title": "Booking UID",
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "title": "User ID",
+                        "type": "integer"
+                    },
+                    "price": {
+                        "title": "Price",
+                        "type": "decimal"
+                    },
+                    "location_id": {
+                        "title": "Location ID",
+                        "type": "integer"
+                    },
+                    "warehouses_used": {
+                        "title": "Warehouses Used",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Booking"
+                }
+            }
+        },
         "securitySchemes": {
             "apiAuth": {
                 "type": "http",
