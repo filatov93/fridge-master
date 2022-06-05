@@ -2,4 +2,4 @@
 
 ## OpenAPi 3.0 Documentation
 
-{host}/api/documentation#/authentication
+{host}/api/documentation
