@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
@@ -22,9 +23,23 @@ class BookingController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get (
+     *     path="/bookings/create",
+     *     tags={"bookings"},
+     *     summary="Get booking form data",
+     *     security={ {"apiAuth": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             @OA\Examples(
+     *                  example="result",
+     *                  value={"location_id": 2, "location": "Портленд (Орегон)", "warehouses_info": {
+     *                      {"warehouse_id": 5, "temperature": "-20.97","available_blocks": 5}}},
+     *                  summary="An result object.")
+     *         )
+     *     )
+     * )
      */
     public function create()
     {
@@ -39,14 +54,72 @@ class BookingController extends Controller
         return response($data);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/bookings/calculate",
+     *     tags={"bookings"},
+     *     summary="Calculate required blocks",
+     *     security={ {"apiAuth": {} }},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="days",
+     *                     type="integer"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="required_space",
+     *                     type="integer"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="location_id",
+     *                     type="integer"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="temperature",
+     *                     type="decimal"
+     *                 ),
+     *                 example={"days": 22, "required_space": 21, "location_id": 2, "temperature": -2.2}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="booking_uid",
+     *                 type="string",
+     *             ),
+     *             @OA\Property(
+     *                 property="price",
+     *                 type="decimal",
+     *             ),
+     *             @OA\Property(
+     *                 property="warehouses_used",
+     *                 type="array",
+     *                 @OA\Items(type="integer")
+     *             ),
+     *             @OA\Examples(
+     *                  example="result",
+     *                  value={"required_blocks": 11, "price": 484, "warehouses_used": {5, 8}},
+     *                  summary="An result object."),
+     *         )
+     *     )
+     * )
+     */
     public function calculateSpace(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'days' => 'required|numeric|max:24',
             'required_space' => 'required|numeric',
             'location_id' => 'required|numeric',
             'temperature' => 'required|numeric'
         ]);
+        if ($validator->fails())
+            return response($validator->errors());
+
         $requiredBlocks = ceil($request->required_space / 2);
         $location = Location::find($request->location_id);
         $availableBlocks = 0;
@@ -83,20 +156,60 @@ class BookingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/bookings",
+     *     tags={"bookings"},
+     *     summary="Adds a new booking",
+     *     security={ {"apiAuth": {} }},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="location_id",
+     *                     type="integer"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="required_blocks",
+     *                     type="integer"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="price",
+     *                     type="decimal"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="warehouses_used",
+     *                     type="array",
+     *                     @OA\Items(type="integer")
+     *                 ),
+     *                 example={"location_id": 2, "required_blocks": 1, "price": 484, "warehouses_used": {5,8}}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="booking_uid",
+     *                 type="string",
+     *             ),
+     *             @OA\Examples(example="result", value={"booking_uid": "tUPzqV2F5zZ8"}, summary="An result object."),
+     *         )
+     *     )
+     * )
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'location_id' => 'required|numeric',
             'required_blocks' => 'required|numeric',
             'price' => 'required|numeric',
             'warehouses_used' => 'required'
         ]);
-        $id = $request->user()->id;
+        if ($validator->fails())
+            return response($validator->errors());
+
         $booking = Booking::create([
             'booking_uid' => Str::random(12),
             'user_id' => $request->user()->id,

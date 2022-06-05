@@ -18,5 +18,4 @@ class Booking extends Model
         'location_id',
         'warehouses_used'
     ];
-
 }

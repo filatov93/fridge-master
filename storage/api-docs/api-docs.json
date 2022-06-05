@@ -1,0 +1,281 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Fridge Master API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://fridge-master/api"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Log in",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "login": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "login": "test_user_1",
+                                    "password": "password1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "error": null,
+                                            "token": "1|AiKTkfvTwAE2vnbq55PVgPTreXVkfeugyyilXThO"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bookings/create": {
+            "get": {
+                "tags": [
+                    "bookings"
+                ],
+                "summary": "Get booking form data",
+                "operationId": "4eabb71ab002c4cda21295e549221ef8",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "location_id": 2,
+                                            "location": "Портленд (Орегон)",
+                                            "warehouses_info": [
+                                                {
+                                                    "warehouse_id": 5,
+                                                    "temperature": "-20.97",
+                                                    "available_blocks": 5
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/bookings/calculate": {
+            "post": {
+                "tags": [
+                    "bookings"
+                ],
+                "summary": "Calculate required blocks",
+                "operationId": "bec9d27029b2de2d2e9a042056fecd8d",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "days": {
+                                        "type": "integer"
+                                    },
+                                    "required_space": {
+                                        "type": "integer"
+                                    },
+                                    "location_id": {
+                                        "type": "integer"
+                                    },
+                                    "temperature": {
+                                        "type": "decimal"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "days": 22,
+                                    "required_space": 21,
+                                    "location_id": 2,
+                                    "temperature": -2.2
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "booking_uid": {
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "type": "decimal"
+                                        },
+                                        "warehouses_used": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "required_blocks": 11,
+                                            "price": 484,
+                                            "warehouses_used": [
+                                                5,
+                                                8
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/bookings": {
+            "post": {
+                "tags": [
+                    "bookings"
+                ],
+                "summary": "Adds a new booking",
+                "operationId": "2911657b7059f988a4bc398a1d21e68f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "location_id": {
+                                        "type": "integer"
+                                    },
+                                    "required_blocks": {
+                                        "type": "integer"
+                                    },
+                                    "price": {
+                                        "type": "decimal"
+                                    },
+                                    "warehouses_used": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "location_id": 2,
+                                    "required_blocks": 1,
+                                    "price": 484,
+                                    "warehouses_used": [
+                                        5,
+                                        8
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "booking_uid": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "booking_uid": "tUPzqV2F5zZ8"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based Based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
